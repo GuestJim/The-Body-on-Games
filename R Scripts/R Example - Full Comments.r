@@ -17,30 +17,6 @@ PULSEframe = data.frame(as.numeric(PULSEframe[, 1]), as.numeric(PULSEframe[, 2])
 colnames(PULSEframe) <- c("Rate","Count")
 #	sets the column names
 
-PULSEcut = subset(PULSEframe, 65 < PULSEframe$Rate & PULSEframe$Rate < 70)
-#	makes a subset for BPM between 65 and 70
-if (sum(PULSEcut$Count) > 10) {
-#	checks how frequently the BPM is between 65 and 70
-#	typically BPM in this range is an error, but I assume it is not if it happens over 10 times
-	PULSEseq <- seq(from = 65, to = max(PULSEclean, 100), by = 1)
-} else {
-  PULSEseq <- seq(from = 70, to = max(PULSEclean, 100), by = 1)
-}
-#	creates the sequence of BPM values for the x-axis, dependant on the appearance of BPM between 65 and 70
-							
-PULSEcut = subset(PULSEframe, 60 < PULSEframe$Rate & PULSEframe$Rate < 65)
-if (sum(PULSEcut$Count) > 10) {
-  PULSEseq <- seq(from=60, to=max(PULSEclean,100), by=1)
-} else {}
-#	same as above, but checks for the 60-65 BPM range
-							
-#Process
-write.table(PULSEframe,file="Dark Souls 2 - Chapter 1 Frequency.txt", sep=",", row.names=FALSE)
-#	writes the results of tthe table to a file, but does not add row names
-#quantile(PULSEclean, c(.001, .01, .99, 0.999))
-#summary(PULSEclean)
-#	unnecessary extra processing here for reference if curious
-
 #Time in Video
 form = "%H:%M:%S"
 #	sets my preferred hh:mm:ss format for time information
@@ -53,10 +29,34 @@ colnames(TiV) = c("Time in Video ","PULSE")
 #	sets the column names for the frame to something readable
 write_csv(TiV, "Dark Souls 2 - Chapter 1_201804011546 - Timed.csv")
 #	creates the CSV file from the TiV frame
-							
+
 time = TiV[nrow(TiV), 1]
 #	finds the last time of TiV, the length of the video
-							
+
+PULSEcut = subset(PULSEframe, 65 < PULSEframe$Rate & PULSEframe$Rate < 70)
+#	makes a subset for BPM between 65 and 70
+if (sum(PULSEcut$Count) > 10) {
+#	checks how frequently the BPM is between 65 and 70
+#	typically BPM in this range is an error, but I assume it is not if it happens over 10 times
+	PULSEseq <- seq(from = 65, to = max(PULSEclean, 100), by = 1)
+} else {
+  PULSEseq <- seq(from = 70, to = max(PULSEclean, 100), by = 1)
+}
+#	creates the sequence of BPM values for the x-axis, dependant on the appearance of BPM between 65 and 70
+
+PULSEcut = subset(PULSEframe, 60 < PULSEframe$Rate & PULSEframe$Rate < 65)
+if (sum(PULSEcut$Count) > 10) {
+  PULSEseq <- seq(from=60, to=max(PULSEclean,100), by=1)
+} else {}
+#	same as above, but checks for the 60-65 BPM range
+
+#Process
+write.table(PULSEframe,file="Dark Souls 2 - Chapter 1 Frequency.txt", sep=",", row.names=FALSE)
+#	writes the results of tthe table to a file, but does not add row names
+#quantile(PULSEclean, c(.001, .01, .99, 0.999))
+#summary(PULSEclean)
+#	unnecessary extra processing here for reference if curious
+
 pdf(NULL)
 #	to prevent GGPlot from making an undesired pdf
 
