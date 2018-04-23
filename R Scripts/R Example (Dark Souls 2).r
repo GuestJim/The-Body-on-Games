@@ -15,14 +15,14 @@ time = sprintf('%02d:%02d:%02d', td@hour, minute(td), second(td))
 
 PULSEcut = subset(PULSEframe, 65 < PULSEframe$Rate & PULSEframe$Rate < 70)
 if (sum(PULSEcut$Count) > 10) {
-PULSEseq <- seq(from=65, to=max(PULSEclean,100), by=1)
+  PULSEseq <- seq(from=65, to=max(PULSEclean,100), by=1)
 } else {
-PULSEseq <- seq(from=70, to=max(PULSEclean,100), by=1)
+  PULSEseq <- seq(from=70, to=max(PULSEclean,100), by=1)
 }
 
 PULSEcut = subset(PULSEframe, 60 < PULSEframe$Rate & PULSEframe$Rate < 65)
 if (sum(PULSEcut$Count) > 10) {
-PULSEseq <- seq(from=60, to=max(PULSEclean,100), by=1)
+  PULSEseq <- seq(from=60, to=max(PULSEclean,100), by=1)
 } else {}
 
 #Process
