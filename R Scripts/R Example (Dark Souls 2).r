@@ -1,6 +1,5 @@
 library(readr)
 library(ggplot2)
-library(lubridate)
 setwd("M:/TBOG/Dark Souls 2/Dark Souls 2 - Chapter 1/")
 results <- read_csv("Dark Souls 2 - Chapter 1_201804011546 - Edited.csv")
 
@@ -10,25 +9,31 @@ PULSEframe = data.frame(as.numeric(as.character(PULSEframe$Var1)),as.numeric(as.
 colnames(PULSEframe) <- c("Rate","Count")
 PULSEclean <- results$PULSE[!results$PULSE==0]
 
-td = seconds_to_period(length(results$PULSE))
-time = sprintf('%02d:%02d:%02d', td@hour, minute(td), second(td))
-
 PULSEcut = subset(PULSEframe, 65 < PULSEframe$Rate & PULSEframe$Rate < 70)
 if (sum(PULSEcut$Count) > 10) {
-  PULSEseq <- seq(from=65, to=max(PULSEclean,100), by=1)
+PULSEseq <- seq(from=65, to=max(PULSEclean,100), by=1)
 } else {
-  PULSEseq <- seq(from=70, to=max(PULSEclean,100), by=1)
+PULSEseq <- seq(from=70, to=max(PULSEclean,100), by=1)
 }
 
 PULSEcut = subset(PULSEframe, 60 < PULSEframe$Rate & PULSEframe$Rate < 65)
 if (sum(PULSEcut$Count) > 10) {
-  PULSEseq <- seq(from=60, to=max(PULSEclean,100), by=1)
+PULSEseq <- seq(from=60, to=max(PULSEclean,100), by=1)
 } else {}
 
 #Process
 write.table(PULSEframe,file="Dark Souls 2 - Chapter 1 Frequency.txt", sep=",",row.names=FALSE)
 quantile(PULSEclean, c(.001, .01, .99, 0.999))
 summary(PULSEclean)
+
+#Time in Video
+form = "%H:%M:%S"
+times = format(seq(ISOdate(1,1,1, 0), by = "sec", length.out = dim(results)[1]), form)
+TiV = cbind(times, results[2])
+colnames(TiV) = c("Time in Video ","PULSE")
+write_csv(TiV, "Dark Souls 2 - Chapter 1_201804011546 - Timed.csv")
+
+time = TiV[dim(TiV)[1], 1]
 
 pdf(NULL)
 
