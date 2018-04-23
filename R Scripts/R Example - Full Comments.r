@@ -1,5 +1,7 @@
 library(readr)
+#	loads the library for reading CSVs into R
 library(ggplot2)
+#	loads the GGPlot2 library for generating graphs
 setwd("M:/TBOG/Dark Souls 2/Dark Souls 2 - Chapter 1/")
 #	sets the working directory, so files can be read and written just with name
 results <- read_csv("Dark Souls 2 - Chapter 1_201804011546 - Edited.csv")
