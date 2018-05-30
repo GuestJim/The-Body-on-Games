@@ -11,6 +11,7 @@ Tsize = 16
 #Variables
 PULSEclean <- results$PULSE[!results$PULSE == 0]
 PULSEframe <- as.data.frame(table(PULSEclean))
+PULSEframe[, 1] = as.character(PULSEframe[, 1])
 PULSEframe = data.frame(as.numeric(PULSEframe[, 1]),as.numeric(PULSEframe[, 2]))
 colnames(PULSEframe) <- c("Rate","Count")
 
