@@ -21,6 +21,9 @@ PULSEclean <- results$PULSE[!results$PULSE == 0]
 #	BPM == 0 elements are removed (happens when oximeter loses signal)
 PULSEframe <- as.data.frame(table(PULSEclean)
 #	creates a table of how often certain BPM values were recorded
+PULSEframe[, 1] = as.character(PULSEframe[, 1])
+#	makes the first column type Character
+#	this fixes converting a Factor to a Numeric losing the data
 PULSEframe = data.frame(as.numeric(PULSEframe[, 1]), as.numeric(PULSEframe[, 2]))
 #	sets data type of the columns to be numeric
 colnames(PULSEframe) <- c("Rate","Count")
