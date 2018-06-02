@@ -2,13 +2,17 @@
 ::echo "%~1"
 
 TITLE TBOG Overlay - %~n1
+::	sets the title of the Console window
 
 set folder=Overlay
 
 set rateU=10M
 set qualityU=libx264 -crf 18 -maxrate %rateU% -bufsize %rateU% -preset veryslow
+::	sets variables for quality settings, to more easily configure them
+::	using VerySlow because filters appeared to bottleneck previously
 
 ::this is so I can change the color of the overlay after the fact
+::	gaze overlay is originally green
 ::no change
 set hue=0
 ::blue
@@ -16,14 +20,14 @@ set hue=0
 ::red
 ::set hue=-120
 
-::with this I can change the opacity of the overlay after the fact as well
 set opac=200
+::	with this I can change the opacity of the Gaze overlay after the fact as well
 
-::will place the overlay in the lower right corner
 set px=main_w-overlay_w
 set py=main_h-overlay_h
-set px=0
-set py=0
+::set px=0
+::set py=0
+::	sets the position of the upper left corner of the heart rate monitor
 
 ::186 because there is some extra space at the top, beyond the room for the SpO2
 set crop=186
@@ -32,10 +36,11 @@ set scale=220
 
 ::NohBoard Blue
 set color=000064
+::	for removing the background from NohBoard, if I capture it
 
 ::SPO2 Black
 set color=000000
-
+::	for removing black from the heart rate monitor
 
 set command=[0:v:2] colorkey=000000:0.01:0.50 [tobii], ^
 [tobii] hue=h=%hue%, lut=a="val*%opac%/256" [tobiicolor], ^
@@ -45,10 +50,11 @@ set command=[0:v:2] colorkey=000000:0.01:0.50 [tobii], ^
 [spo2] scale=-1:'min(ih,%scale%):flags=lanczos' [spo2over], ^
 [tobiidone][spo2over] overlay=x=%px%:y=%py%:shortest=1, format=pix_fmts=yuvj420p
 
-::for colorkey, the first argument is the color, second is similarity, and third is the blend percentage, so 0 is fully transparent
+::	for colorkey, the first argument is the color, second is similarity, and third is the blend percentage, so 0 is fully transparent
+::	it might not be the most efficient, but I prefer to separate the commands for the two different overlays, for easier review
 
 ::[tobiiout] scale=-1:'min(ih,1080):flags=lanczos' [tobiidone]; ^
-::removing the scaling speeds things up some
+::	for scaling the original video and Gaze overlay. Not currently used
 
 if NOT EXIST "%~dp1%folder%" (
 mkdir "%~dp1%folder%"
