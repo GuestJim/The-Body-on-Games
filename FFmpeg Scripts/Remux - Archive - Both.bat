@@ -20,6 +20,8 @@ ffmpeg -i "%~1" -i "%~2" -i "%~3" -f lavfi -i anullsrc=cl=stereo:r=44100 -shorte
 -metadata:s:a:4? title="Pulse Mic" ^
 -metadata:s:a:5? title="Tobii Game" ^
 -metadata:s:a:6? title="Tobii Mic" "%name% - Archive.mkv"
+::	puts all of the streams into a single file, for easier access, and labels them accordingly
+::	the anullsrc is used to produce a place holder audio stream, so the same Demux command can be used with this and Archive - Final files
 
 ::pause
 
