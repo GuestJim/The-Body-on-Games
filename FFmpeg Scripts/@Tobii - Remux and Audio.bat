@@ -6,9 +6,6 @@ set batloc=C:\Users\Jim\Desktop\FFmpeg Offload
 ::Desktop
 set batloc=E:\Users\Jim\My Videos\FFMPEG Batch files\TBOG
 
-
-set type=Remux - Archive
-
 start CMD /c call "%batloc%\Remux - Archive.bat" "%~1" "%~2"
 ::	Makes the Archive of the files
 
