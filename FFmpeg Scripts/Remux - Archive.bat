@@ -18,6 +18,7 @@ ffmpeg -i "%~1" -i "%~2" -f lavfi -i anullsrc=cl=stereo:r=44100 -shortest -c cop
 -metadata:s:a:2 title="Game Mic" ^
 -metadata:s:a:3? title="Overlay Game" ^
 -metadata:s:a:4? title="Overlay Mic" "%name% - Archive.mkv"
+::	this file produces a generic Archive with just Overlay stream labels, for when I was still doing just one overlay and not both
 
 ::pause
 
