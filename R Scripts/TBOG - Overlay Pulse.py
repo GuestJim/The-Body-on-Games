@@ -9,7 +9,7 @@ droppedPath = sys.argv[3]
 scriptPath = os.path.abspath('')
 #	gets the path of the Python script, which is the same path for the R source scripts
 scriptType = "TBOG"
-scriptName = "Pulse"
+scriptName = "Overlay Pulse"
 #	separate Type and Name variables for use with the outputName variable below
 scriptFull = scriptPath + "\\" + scriptType + " - " + scriptName + ".r"
 #	full path and name of the source R script
@@ -32,6 +32,5 @@ copyfile(scriptFull, outputFull)
 
 with fileinput.FileInput(outputName, inplace=True) as file:
 	for line in file:
-		print(line.replace("!PATH!", RPath).replace("!FILE!", fileName).replace("!FILEO!", droppedName[:-9]).replace("!FILEX!", droppedName + ".csv"), end='')
+		print(line.replace("!PATH!", RPath).replace("!FILE!", fileName).replace("!FILEX!", droppedName + ".csv"), end='')
 #	reads the lines of the outpur R script and replaces specific strings with the correct references
-#		the droppedName[:-9] removes the " - Edited" from the file name
