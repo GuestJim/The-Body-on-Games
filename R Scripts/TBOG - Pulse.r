@@ -5,8 +5,7 @@ results <- read_csv("!FILEX!")
 
 pdf = FALSE
 DPI = 120
-ggscale = 1 
-
+ggscale = 1
 Tsize = 16
 
 #Variables
