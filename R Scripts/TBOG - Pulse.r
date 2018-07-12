@@ -3,6 +3,7 @@ library(ggplot2)
 setwd("!PATH!")
 results <- read_csv("!FILEX!")
 
+pdf = FALSE
 DPI = 120
 ggscale = 1 
 
@@ -56,5 +57,8 @@ scale_y_continuous(name = "Count", expand = c(0.02, 0)) +
 theme_bw(base_size = Tsize) + 
 theme(legend.position = c(1, 1), legend.justification = c(1, 1))
 
-ggsave(filename="!FILE! - Hist.png", device="png", width=16, height=9, dpi=DPI, scale = ggscale)
-#ggsave(filename="!FILE! - Hist.pdf", device="pdf", width=16, height=9)
+if (pdf){
+	ggsave(filename="!FILE! - Hist.pdf", device="pdf", width=16, height=9, scale = ggscale)
+	} else {
+	ggsave(filename="!FILE! - Hist.png", device="png", width=16, height=9, dpi=DPI, scale = ggscale)
+	}
