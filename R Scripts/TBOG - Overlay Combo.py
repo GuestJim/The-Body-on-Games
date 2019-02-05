@@ -1,36 +1,60 @@
-import sys, os, fileinput
+import sys, os
 #	loads different modules for Python
 
-droppedFile = sys.argv[1]
-droppedPuls = sys.argv[2]
-droppedWave = sys.argv[3]
-droppedPath = sys.argv[4]
-#	assigns the values of the Batch Parameters passed to the Python script to these variables
+scriptPath = sys.argv[0].rsplit("\\",1)[0]
+#	gets the path to the Python script, which is the same location as the reference R scripts
 
-scriptPath = os.path.abspath('')
-#	gets the path of the Python script, which is the same path for the R source scripts
 scriptType = "TBOG"
+#	sets the script type is for TBOG files
 scriptName = "Overlay Combo"
-#	separate Type and Name variables for use with the outputName variable below
+#	sets the specific script to be used
 scriptFull = scriptPath + "\\" + scriptType + " - " + scriptName + ".r"
-#	full path and name of the source R script
-outputName = scriptName + " - " + droppedPuls.split('_')[0] + ".r"
-#	name of output R script
-#		.split('_')[0] splits the droppedPuls string at the underscore and then selects the first sub-string
-#		this first sub-string lacks the underscore and timecode of the original name
-#	full path and name of output R script
+#	constructs the complete path to the desired script
+
+droppedFiles = sys.argv[1:]
+#	the complete paths to the dropped files
+#		2 files must be dropped, as one holds the WAVE data
+droppedPath = droppedFiles[0].rsplit("\\",1)[0] + "\\"
+#	the directory path to the dropped files
+
+for file in droppedFiles:
+#	goes through the list of droppedFiles
+	if "_wave" in file:
+#		checks if _wave is in the file name
+		droppedWave = file.replace("\\", "/")
+#			saves the file location to the correct variable
+#			replaces the \ symbols with / for R
+	else:
+#		if it is not the WAVE file, it is the pulse file
+		droppedPuls = file.replace("\\", "/")
+#			saves the file location to the correct variable
+#			replaces the \ symbols with / for R
+
+namePuls = droppedPuls.rsplit("/",1)[1].split(".")[0]
+#	the file name for just the pulse file
+fileName = namePuls.split('_')[0]
+#	the file name of the pulse file without timecode
+
+outputName = scriptName + " - " + fileName
+#	constructs the name for the output file
+outputFull = droppedPath + outputName + ".r"
+#	constructs the complete path for the output file
 
 RPath = droppedPath.replace("\\", "/")
 #	R needs to use / instead of \ for file paths, hence this conversion
 
-os.chdir(droppedPath)
-#	changes the current working directory to where the CSV is
+with open(scriptFull, 'r') as fref, open(outputFull, 'w') as fout:
+#	opens and reads the reference R script to the fref variable
+#	opens the output R script, and calls it fout
+	for line in fref:
+#		reads through each line from the reference file
+		fout.write(line.replace("!PATH!", RPath).replace("!FILEPuls!", fileName).replace("!FILEWave!", droppedWave).replace("!FILEPulsX!", droppedPuls).replace("!FILEWaveX!", droppedWave))
+#			replaces the !PATH!, !FILEPuls!, !FILEPulsX!, etc. text in the reference file
+#				note it is writing to fout, not fref, so the reference file is never changed
+	fout.close()
+#		closes fout, which finishes the file so it can be used
 
-from shutil import copyfile
-copyfile(scriptFull, outputFull)
-#	copies the source R script to the output R script location and name
+#os.system("\"" + outputFull + "\"")
+#	runs the script but not helpful if CSV not editted
 
-with fileinput.FileInput(outputName, inplace=True) as file:
-	for line in file:
-		print(line.replace("!PATH!", RPath).replace("!FILEPuls!", droppedPuls).replace("!FILEWave!", droppedWave).replace("!FILEPulsX!", droppedPuls + ".csv").replace("!FILEWaveX!", droppedWave + ".csv"), end='')
-#	reads the lines of the outpur R script and replaces specific strings with the correct references
+#os.system("pause")
