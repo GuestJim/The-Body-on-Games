@@ -1,23 +1,28 @@
-import sys, os, fileinput
-droppedFile = sys.argv[1]
-droppedName = sys.argv[2]
-droppedPath = sys.argv[3]
+import sys, os
 
-scriptPath = os.path.abspath('')
+scriptPath = sys.argv[0].rsplit("\\",1)[0]
+
 scriptType = "TBOG"
 scriptName = "Pulse"
 scriptFull = scriptPath + "\\" + scriptType + " - " + scriptName + ".r"
+
+droppedFile = sys.argv[1]
+droppedPath = droppedFile.rsplit("\\",1)[0] + "\\"
+
+droppedName = droppedFile.rsplit("\\",1)[1].split(".")[0]
 fileName = droppedName.split('_')[0]
-outputName = scriptName + " - " + droppedName + ".r"
-outputFull = droppedPath + outputName
+
+outputName = scriptName + " - " + fileName
+outputFull = droppedPath + outputName + ".r"
 
 RPath = droppedPath.replace("\\", "/")
 
-os.chdir(droppedPath)
+with open(scriptFull, 'r') as fref, open(outputFull, 'w') as fout:
+	for line in fref:
+		fout.write(line.replace("!PATH!", RPath).replace("!FILE!", fileName).replace("!FILEX!", droppedName + ".csv"))
+	fout.close()
 
-from shutil import copyfile
-copyfile(scriptFull, outputFull)
+#os.system("\"" + outputFull + "\"")
+#	runs the script, but not helpful if CSV not editted
 
-with fileinput.FileInput(outputName, inplace=True) as file:
-	for line in file:
-		print(line.replace("!PATH!", RPath).replace("!FILE!", fileName).replace("!FILEO!", droppedName[:-9]).replace("!FILEX!", droppedName + ".csv"), end='')
+os.system("pause")

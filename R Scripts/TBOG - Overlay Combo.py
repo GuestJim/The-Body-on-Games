@@ -1,23 +1,34 @@
-import sys, os, fileinput
-droppedFile = sys.argv[1]
-droppedPuls = sys.argv[2]
-droppedWave = sys.argv[3]
-droppedPath = sys.argv[4]
+import sys, os
 
-scriptPath = os.path.abspath('')
+scriptPath = sys.argv[0].rsplit("\\",1)[0]
+
 scriptType = "TBOG"
 scriptName = "Overlay Combo"
 scriptFull = scriptPath + "\\" + scriptType + " - " + scriptName + ".r"
-outputName = scriptName + " - " + droppedPuls.split('_')[0] + ".r"
-outputFull = droppedPath + outputName
+
+droppedFiles = sys.argv[1:]
+droppedPath = droppedFiles[0].rsplit("\\",1)[0] + "\\"
+
+for file in droppedFiles:
+	if "_wave" in file:
+		droppedWave = file.replace("\\", "/")
+	else:
+		droppedPuls = file.replace("\\", "/")
+
+namePuls = droppedPuls.rsplit("/",1)[1].split(".")[0]
+fileName = namePuls.split('_')[0]
+
+outputName = scriptName + " - " + namePuls
+outputFull = droppedPath + outputName + ".r"
 
 RPath = droppedPath.replace("\\", "/")
 
-os.chdir(droppedPath)
+with open(scriptFull, 'r') as fref, open(outputFull, 'w') as fout:
+	for line in fref:
+		fout.write(line.replace("!PATH!", RPath).replace("!FILEPuls!", fileName).replace("!FILEWave!", droppedWave).replace("!FILEPulsX!", droppedPuls).replace("!FILEWaveX!", droppedWave))
+	fout.close()
 
-from shutil import copyfile
-copyfile(scriptFull, outputFull)
+#os.system("\"" + outputFull + "\"")
+#	runs the script but not helpful if CSV not editted
 
-with fileinput.FileInput(outputName, inplace=True) as file:
-	for line in file:
-		print(line.replace("!PATH!", RPath).replace("!FILEPuls!", droppedPuls).replace("!FILEWave!", droppedWave).replace("!FILEPulsX!", droppedPuls + ".csv").replace("!FILEWaveX!", droppedWave + ".csv"), end='')
+os.system("pause")
