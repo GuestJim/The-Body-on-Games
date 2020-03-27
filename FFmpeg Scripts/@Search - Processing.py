@@ -36,7 +36,14 @@ for fold in Folds:
 				TBOGAudi = file
 
 			if TBOGArch is not None and TBOGAudi is not None:
-				os.system("call \"" + batfile + "\" \"" + foldPath +  TBOGArch + "\" \"" + foldPath + TBOGAudi + "\"")
+				os.chdir(foldPath)
+				os.system("call \"" + batfile + "\" \"" + TBOGArch + "\" \"" + TBOGAudi + "\"")
+				os.rename("Overlay\\" + TBOGArch.replace(".mkv", " - Upload.mp4"), "Overlay\\" + TBOGArch.replace(".mkv", ".mp4").replace(" - Archive", " - Upload"))
+				#	having it rename here could be convenient
+				for file in os.listdir("Overlay"):
+					os.rename("Overlay\\" + file, file)
+				os.rmdir("Overlay")
+				#	moves the files out of the Overlay folder and then removes the folder
 				break
 
-#os.system("pause")
+# os.system("pause")
