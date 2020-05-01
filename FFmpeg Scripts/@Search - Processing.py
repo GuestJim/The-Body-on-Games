@@ -38,7 +38,8 @@ for fold in Folds:
 			if TBOGArch is not None and TBOGAudi is not None:
 				os.chdir(foldPath)
 				os.system("call \"" + batfile + "\" \"" + TBOGArch + "\" \"" + TBOGAudi + "\"")
-				os.rename("Overlay\\" + TBOGArch.replace(".mkv", " - Upload.mp4"), "Overlay\\" + TBOGArch.replace(".mkv", ".mp4").replace(" - Archive", " - Upload"))
+				if TBOGArch.replace(".mkv", " - Upload.mp4") in os.listdir("Overlay"):
+					os.rename("Overlay\\" + TBOGArch.replace(".mkv", " - Upload.mp4"), "Overlay\\" + TBOGArch.replace(".mkv", ".mp4").replace(" - Archive", " - Upload"))
 				#	having it rename here could be convenient
 				for file in os.listdir("Overlay"):
 					os.rename("Overlay\\" + file, file)
