@@ -168,13 +168,3 @@ facetHIST	=	function()	{
 }
 
 customSave(name = paste0(game, " - Hist"), plot = facetHIST(), width = 16)
-
-##	see about making it so this one Search script will find all of the CSVs and make the separate Timed, Hist, and table outputs for each. It should be doable, and having some check on if Timed.csv exists, to skip making the graph and such when it is already there. This single-script design might be superior to the current multi-script, at least for simplicity. Also will be a fun exercise to get working.
-
-# for (ind in 1:length(CSVs))	{
-	# VAR	=	paste0("CSV", ind)
-	# assign(VAR, read_csv(CSVs[ind]))
-# }
-#	this will assign a separate CSV to separate, generated variables
-#	not really needed though as having a single data frame with all of the data, and an identifying column, is all that is really needed
-#		remembering that may help to get this working as I want it to, especially as I already achieved that with OCAT - Search - PA.r
