@@ -171,7 +171,8 @@ facetHIST	=	function()	{
 	stat_bin(binwidth = 1, col = "black") + 
 	scale_x_continuous(name = "Heart Rate (bpm)", minor_breaks = NULL) + 
 	scale_y_continuous(name = "Count", expand = c(0.02, 0)) + 
-	facet_wrap(vars(Part), scales = "free_y", labeller = labeller(Part = function(IN)	gsub(paste0(game, " - "), "", IN))) + 
+		facet_wrap(vars(Part), scales = "free_y", labeller = labeller(Part = function(IN)	sapply(gsub(paste0(game, " - "), "", IN), prettyNUM)	)) + 
+	# facet_wrap(vars(Part), scales = "free_y", labeller = labeller(Part = function(IN)	gsub(paste0(game, " - "), "", IN)	)) + 
 	theme(legend.position = "none", plot.title.position = "plot")
 }
 
